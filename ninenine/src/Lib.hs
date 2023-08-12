@@ -65,7 +65,7 @@ flatten (Elem x) = [x]
 flatten (List []) = []
 flatten (List (x:xs)) = myconcat (flatten x) (flatten (List xs))
 
-(**) Eliminate consecutive duplicates of list elements.
+-- (**) Eliminate consecutive duplicates of list elements.
 t4 :: String
 t4 = "aaabbbcddd"
 compress :: (Eq a) => [a] -> [a]
@@ -76,12 +76,35 @@ compress (x:y:xs) = if x == y then
                     else
                       x : compress (y:xs)
 
-(**) Pack consecutive duplicates of list elements into sublists.
+-- (**) Pack consecutive duplicates of list elements into sublists.
 
 pack :: (Eq a) => [a] -> [[a]]
-pack [] = []
+pack ls = help [] ls
+  where
+    help [] [] = []
+    help xs [] = xs : []
+    help [] (x:xs) = help [x] xs
+    help (x:xs) (y:ys) =
+      if x == y
+      then
+        help (y:x:xs) ys
+      else
+        (x:xs) : help [y] ys 
 
+-- (*) Run-length encoding of a list.
 
+rle :: (Eq a) => [a] -> [(Int,a)]
+rle [] = []
+rle (l:ls) = help (1, l) ls
+  where
+    help t [] = [t]
+    help (count, val) (x:xs) =
+      if val == x then
+        help (count + 1, val) xs
+      else
+        (count, val) : help (1, x) xs
+        
+       
 someFunc :: IO ()
 someFunc = do
   let tr1 = chartostr $ mylast t1
@@ -100,3 +123,7 @@ someFunc = do
   putStrLn tr7
   let tr8 = show $ compress t4
   putStrLn tr8
+  let tr9 = show $ pack t4
+  putStrLn tr9
+  let tr10 = show $ rle t4
+  putStrLn tr10
