@@ -1,7 +1,17 @@
 module Lib
-    ( someFunc
+    ( someFunc,
+      mylast,
+      butlast,
+      elt,
+      mylen,
+      myrev,
+      ispal,
+      NestedList(Elem,List),
+      flatten,
+      compress,
+      pack,
+      rle
     ) where
-
 -- https://wiki.haskell.org/99_questions/1_to_10
 -- (*) Find the last element of a list.
 mylast :: [a] -> a
